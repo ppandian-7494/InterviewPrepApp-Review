@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+	<head>
+		<title>Interview Prep Application</title>
+	</head>
+	<body>
+		<h1>Users</h1>
+		<div th:if="${#lists.size(users) == 1}">
+			<form action="" method="post" th:each="user : ${users}">
+				<div>
+					Username: <input type="text" th:field="${user.username}"/>
+				</div>
+				<div>
+					Password: <input type="password" th:field="${user.password}"/>
+				</div>
+				<div>
+					Full Name: <input type="text" th:field="${user.name}"/>
+				</div>
+				<div>
+					<input type="submit" value="Update User Acount"/>
+				</div>
+			</form>
+			<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
+				<input type="submit" value="Delete User Account" />
+			</form>
+			<hr style="margin: 1em 0em;"/>
+			<form th:action="@{/users/{userId}/documents(userId=${user.userId})}" method="post">
+				<h3>Documents</h3>
+				<div th:each="document : ${user.documents}">
+					<a th:href="@{/users/{userId}/documents/{documentId}(userId=${user.userId},documentId=${document.documentId})}" th:text="${document.topic}"></a>
+				</div>
+				<input style="margin-top: 1em;" type="submit" value="Create Document"/>
+			</form>
+			<div style="margin-top: 1em;">
+				<a href="/users">Back</a>
+			</div>
+		</div>
+		
+		<div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
+			<a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a><br/>
+			<span th:text="${user.username}"></span><br/>
+			<span th:text="${user.password}"></span><br/>
+			<span th:text="${user.name}"></span>
+			<div th:each="document : ${user.documents}">
+				<a th:href="@{/users/{userId}/documents/{documentId}(userId=${user.userId},documentId=${document.documentId})}" th:text="${document.topic}"></a>
+			</div>
+			<hr/>
+		</div>
+	</body>
+</html>

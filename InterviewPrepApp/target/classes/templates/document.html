@@ -1,0 +1,44 @@
+<html xmlns:th="http://thymeleaf.org">
+	<head>
+		<title>Interview Prep Application</title>
+	</head>
+	<body>
+		<h1>Documents</h1>
+		
+		<div th:each="storedDocument : ${documents}">
+			<span th:inline="text">
+				Document #[[${storedDocument.id}]]: <a th:href="@{/documents/{documentId}(documentId=${storedDocument.id})}">[[${storedDocument.topic}]] - [[${storedDocument.category}]]</a>
+			</span>
+		</div>
+		<hr/>
+		<form action="" method="post">
+			<input type="hidden" th:field="${document.documentId}"/>
+			<div>
+				<label>Topic: </label>
+				<input type="text" th:field="${document.topic}"/>
+			</div>
+			<div>
+				<label>Description: </label>
+				<textarea rows="3" cols="30" th:field="${document.description}"></textarea>
+			</div>
+			<div>
+				<label>Category: </label>
+				<input type="text" th:field="${document.category}"/>
+			</div>
+			<div>
+				<label>Code: </label>
+				<input type="text" th:field="${document.code}"/>
+			</div>
+			<div>
+				<a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
+				<button>Submit</button>
+			</div>
+			<div>
+				<input type="submit" value="Update Document"/>
+			</div>
+		</form>
+		<form th:action="@{/documents/{documentId}/delete(documentId=${document.documentId})}" method="post" th:if="${document.documentId != null}">
+			<button>Delete Document</button>
+		</form>
+	</body>
+</html>
